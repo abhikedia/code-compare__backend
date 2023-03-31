@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const codeRouter = require("./routes/codeRouter");
-const startContainer = require("./start-docker");
+const startContainer = require("./docker/start-docker");
 const path = require("path");
 const exitHandler = require("./utils/exitHandler");
 const app = express();
