@@ -1,3 +1,7 @@
 sudo systemctl start docker
 docker build -t code_compare_backend .
 docker run -p 4000:4000 code_compare_backend
+
+
+## Docker start error
+sudo chmod o+rw /var/run/docker.sock
