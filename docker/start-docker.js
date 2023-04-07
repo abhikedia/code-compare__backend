@@ -3,6 +3,8 @@ const docker = new Docker();
 const fs = require("fs");
 const start = require("./utils/attach-and-start");
 
+global.docker = docker;
+
 const loadDockerImage = async () => {
   const imageTar = fs.readFileSync("./code-compare-docker-image.tar");
 
@@ -23,12 +25,13 @@ const startContainer = async () => {
     docker.createContainer(
       {
         Image: "code-compare-docker-image",
-        Cmd: ["echo", "Hello World"],
+        Cmd: ["/bin/sh", "-c", "tail -f /dev/null"],
         Tty: true,
         AttachStdout: true,
         AttachStderr: true,
       },
       (err, container) => {
+        global.containerId = container.id;
         start(container);
       }
     );

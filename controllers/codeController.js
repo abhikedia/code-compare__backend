@@ -1,20 +1,23 @@
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
+const executeCode = require("../docker/code-execution/c++");
 
 const compileCode = async (req, res) => {
   try {
     const { language, code } = req.body;
     const uuid = uuidv4();
-    fs.writeFileSync(`example-${uuid}.cpp`, language);
-    console.log(language, "\n", code);
+
+    executeCode(code, language, uuid);
+
     res.status(200).json({
       status: "success",
-      message: "code received!",
+      // data: result,
+      message: "code executed!",
     });
   } catch (e) {
     res.status(400).json({
       status: "error",
-      message: "Something went wrong",
+      message: "Something went wrong: " + e,
     });
   }
 };
