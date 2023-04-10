@@ -20,3 +20,4 @@ app.listen(port, async () => {
 });
 
 process.once("SIGINT", exitHandler);
+process.once("SIGUSR2", async () => await exitHandler());
