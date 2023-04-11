@@ -1,3 +1,5 @@
+const commands = require("./commands");
+
 const executeCode = async (code, language, uuid, input) => {
   const container = global.docker.getContainer(global.containerId);
   let result = {
@@ -11,7 +13,7 @@ const executeCode = async (code, language, uuid, input) => {
         Cmd: [
           "/bin/bash",
           "-c",
-          `cd home && echo -e '${code}' > ${uuid}.cpp && echo ${input} > ${uuid}.txt && g++ ${uuid}.cpp -o ${uuid} && TIMEFORMAT=%R && time ./${uuid} < ${uuid}.txt > ${uuid}-output.txt`,
+          commands.executionCommands(code, language, uuid, input),
         ],
         AttachStdout: true,
         AttachStderr: true,
@@ -38,7 +40,7 @@ const executeCode = async (code, language, uuid, input) => {
                     Cmd: [
                       "/bin/bash",
                       "-c",
-                      `cd /home && cat ${uuid}-output.txt && rm ${uuid}.cpp && rm ${uuid}.txt && rm ${uuid}-output.txt`,
+                      commands.removalCommands(language, uuid),
                     ],
                     AttachStdout: true,
                     AttachStderr: true,
