@@ -4,8 +4,10 @@ const codeRouter = require("./routes/codeRouter");
 const startContainer = require("./docker/start-docker");
 const path = require("path");
 const exitHandler = require("./utils/exitHandler");
+var cors = require("cors");
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use("/api/v1/code", codeRouter);
 
