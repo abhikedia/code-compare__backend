@@ -13,26 +13,26 @@ const compileCode = async (req, res) => {
     archiveCode(uuid1, code1).then(() =>
       executeCode(uuid1, code1.language, input).then((result) => {
         response.code1 = {
-          output: hexAndAsciiToString(result.output),
-          time: hexAndAsciiToString(result.time),
+          output: result.output,
+          time: result.time,
         };
 
         archiveCode(uuid2, code2).then(() =>
           executeCode(uuid2, code2.language, input).then((result) => {
             response.code2 = {
-              output: hexAndAsciiToString(result.output),
-              time: hexAndAsciiToString(result.time),
+              output: result.output,
+              time: result.time,
             };
+
+            res.status(200).json({
+              status: "success",
+              data: response,
+              message: "code executed!",
+            });
           })
         );
       })
     );
-
-    res.status(200).json({
-      status: "success",
-      data: response,
-      message: "code executed!",
-    });
   } catch (e) {
     res.status(400).json({
       status: "error",

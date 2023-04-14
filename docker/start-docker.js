@@ -26,10 +26,7 @@ const startContainer = async () => {
       {
         Image: "code-compare-docker-image",
         HostConfig: {
-          Resources: {
-            // set the maximum number of open files
-            Ulimits: [{ Name: "nofile", Soft: 65535, Hard: 65535 }],
-          },
+          Ulimits: [{ Name: "nofile", Soft: 65535, Hard: 65535 }],
         },
         Cmd: ["/bin/sh", "-c", "tail -f /dev/null"],
         Tty: true,

@@ -23,7 +23,7 @@ const runCommandInContainer = (
           return reject(err);
         }
         stream.on("data", function (chunk) {
-          result.time = chunk.toString();
+          result.time = chunk;
         });
         stream.on("end", () => {
           exec.inspect((err, data) => {
@@ -40,7 +40,7 @@ const runCommandInContainer = (
                 (err, exec) => {
                   exec.start((err, stream2) => {
                     stream2.on("data", function (chunk) {
-                      result.output = chunk.toString();
+                      result.output = chunk;
                     });
 
                     stream2.on("end", () => resolve(result));
