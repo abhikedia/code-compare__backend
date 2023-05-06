@@ -4,7 +4,7 @@
   "description": "Code compare backend",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node ./utils/install-docker.js && node server.js",
     "dev": "nodemon --signal SIGUSR2 server.js",
     "create:image": "node ./docker/create-image.js",
     "start:server": "pm2 stop server.js && pm2 start server.js",
