@@ -1,7 +1,7 @@
 const executionCommands = (language, uuid, input) => {
   switch (language) {
     case "cpp":
-      return `cd home/user-codes && echo ${input} > ${uuid}.txt && g++ ${uuid}.cpp -o ${uuid} && TIMEFORMAT=%R && time ./${uuid} < ${uuid}.txt > ${uuid}-output.txt`;
+      return `cd home/user-codes && echo '${input}' > ${uuid}.txt && g++ ${uuid}.cpp -o ${uuid} && TIMEFORMAT=%R && time ./${uuid} < ${uuid}.txt > ${uuid}-output.txt`;
 
     case "python":
       return `cd home && echo -e '${code}' > ${uuid}.py && echo ${input} > ${uuid}.txt && chmod +x ./${uuid}.py && TIMEFORMAT=%R && time python3 ${uuid}.py < ${uuid}.txt > ${uuid}-output.txt`;
