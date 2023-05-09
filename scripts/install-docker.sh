@@ -26,5 +26,7 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 # Add the current user to the "docker" group
 sudo usermod -aG docker $USER
 
+sudo systemctl start docker
+
 # Print a message to inform the user that they need to log out and back in for the group membership to take effect
 echo "Please log out and back in for the group membership changes to take effect."
