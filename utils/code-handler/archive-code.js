@@ -1,8 +1,11 @@
 const fs = require("fs");
 const tar = require("tar");
+const logger = require("../../logger/initialize");
 
 const archiveCode = async (uuid, userCode) => {
+  logger.info(`Attempting to archive code: ${uuid}`);
   const { code, language } = userCode;
+
   return new Promise((resolve, reject) => {
     fs.writeFile(`./user-codes/${uuid}.${language}`, code, (err) => {
       if (err) console.log(err);
@@ -16,8 +19,12 @@ const archiveCode = async (uuid, userCode) => {
             [`./user-codes/${uuid}.${language}`]
           )
           .then(() => {
-            console.log("Created");
+            logger.info(`Successfully archived: ${uuid}`);
             resolve();
+          })
+          .catch(() => {
+            logger.error(`Failed to archive: ${uuid}`);
+            reject();
           });
       }
     });

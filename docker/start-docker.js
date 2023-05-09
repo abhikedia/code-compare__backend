@@ -1,11 +1,13 @@
 const Docker = require("dockerode");
 const docker = new Docker();
 const fs = require("fs");
+const logger = require("../logger/initialize");
 const start = require("./utils/attach-and-start");
 
 global.docker = docker;
 
 const loadDockerImage = async () => {
+  logger.info("Attempting to load docker image");
   const imageTar = fs.readFileSync("./code-compare-docker-image.tar");
 
   docker.loadImage(imageTar, function (err, stream) {
@@ -14,13 +16,14 @@ const loadDockerImage = async () => {
     }
 
     return stream.on("end", function () {
-      console.log("Image loaded successfully");
+      logger.info("Image loaded successfully");
       return "1";
     });
   });
 };
 
 const startContainer = async () => {
+  logger.info("Attempting to start container");
   loadDockerImage().then(() => {
     docker.createContainer(
       {
@@ -34,7 +37,13 @@ const startContainer = async () => {
         AttachStderr: true,
       },
       (err, container) => {
+        if (err) {
+          logger.fatal("Failed while creating container:", err);
+          return;
+        }
+
         global.containerId = container.id;
+        logger.info(`Container created: ${container.id}`);
         start(container);
       }
     );

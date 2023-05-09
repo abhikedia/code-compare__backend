@@ -1,10 +1,11 @@
 require("dotenv").config();
+
 const express = require("express");
 const codeRouter = require("./routes/codeRouter");
 const startContainer = require("./docker/start-docker");
-const path = require("path");
 const exitHandler = require("./utils/exitHandler");
 var cors = require("cors");
+const logger = require("./logger/initialize");
 const app = express();
 
 app.use(cors());
@@ -15,11 +16,11 @@ const port = process.env.PORT;
 
 app.listen(port, async () => {
   try {
-    startContainer().then(() => console.log(`started on port:${port}`));
+    startContainer().then(() => logger.info(`started on port:${port}`));
   } catch (e) {
-    console.log("Error starting the application:", e);
+    logger.fatal("Error starting the application:", e);
   }
 });
 
 process.once("SIGINT", exitHandler);
-process.once("SIGUSR2", async () => await exitHandler());
+process.once("SIGUSR2", exitHandler);

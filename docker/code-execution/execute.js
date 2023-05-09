@@ -1,5 +1,5 @@
 const commands = require("./commands");
-const fs = require("fs");
+const logger = require("../../logger/initialize");
 
 const runCommandInContainer = (
   container,
@@ -8,6 +8,8 @@ const runCommandInContainer = (
   executionCommand,
   removalCommand
 ) => {
+  logger.info("Attempting to run execution command");
+
   container.exec(
     {
       Cmd: ["/bin/bash", "-c", executionCommand],
@@ -16,21 +18,26 @@ const runCommandInContainer = (
     },
     function (err, exec) {
       if (err) {
+        logger.error(`Error executing command: ${err}`);
         return reject(err);
       }
       exec.start(function (err, stream) {
         if (err) {
+          logger.error(`Error executing command: ${err}`);
           return reject(err);
         }
         stream.on("data", function (chunk) {
           result.time = chunk;
         });
         stream.on("end", () => {
+          logger.info("Successfully executed code");
           exec.inspect((err, data) => {
             if (err) {
+              logger.error(`Error executing command: ${err}`);
               return reject(err);
             }
             if (!data.Running) {
+              logger.info("Attempting to fetch code results");
               container.exec(
                 {
                   Cmd: ["/bin/bash", "-c", removalCommand],
@@ -43,7 +50,10 @@ const runCommandInContainer = (
                       result.output = chunk;
                     });
 
-                    stream2.on("end", () => resolve(result));
+                    stream2.on("end", () => {
+                      logger.info("Code results fetched successfully");
+                      resolve(result);
+                    });
                   });
                 }
               );
@@ -56,6 +66,7 @@ const runCommandInContainer = (
 };
 
 const executeCode = async (uuid, language, input) => {
+  logger.info(`Executing code: ${uuid}`);
   const container = global.docker.getContainer(global.containerId);
   let result = {
     time: "",

@@ -1,18 +1,23 @@
+const logger = require("../logger/initialize");
+
 const exitHandler = async () => {
-  try {
-    const containers = await global.docker.listContainers();
-    console.log("Shutting down containers");
-    for (const containerInfo of containers) {
+  const containers = await global.docker.listContainers();
+
+  logger.info("Attempting to shut down containers");
+  for (const containerInfo of containers) {
+    try {
+      logger.info(`Stopping container: ${containerInfo.Id}`);
       const container = global.docker.getContainer(containerInfo.Id);
       await container.stop();
-      console.log("Container stopped");
+      logger.info(`Stopping stopped: ${containerInfo.Id}`);
       await container.remove();
-      console.log("Removed:", containerInfo.Id);
+      logger.info(`Stopping removed: ${containerInfo.Id}`);
+    } catch (err) {
+      logger.warn(`Error shutting down containers: ${err.reason}`);
     }
-    console.log("Container shutdown completed.");
-  } catch (err) {
-    console.error("Error shutting down containers:", err);
   }
+  logger.info("Container shutdown completed.");
+  process.exit(0);
 };
 
 module.exports = exitHandler;
