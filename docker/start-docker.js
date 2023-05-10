@@ -12,7 +12,8 @@ const loadDockerImage = async () => {
 
   docker.loadImage(imageTar, function (err, stream) {
     if (err) {
-      return console.log(err);
+      logger.fatal("Failed while loading docker image:", err);
+      return;
     }
 
     return stream.on("end", function () {

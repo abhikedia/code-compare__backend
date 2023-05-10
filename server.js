@@ -15,11 +15,9 @@ app.use("/api/v1/code", codeRouter);
 const port = process.env.PORT;
 
 app.listen(port, async () => {
-  try {
-    startContainer().then(() => logger.info(`started on port:${port}`));
-  } catch (e) {
-    logger.fatal("Error starting the application:", e);
-  }
+  startContainer()
+    .then(() => logger.info(`started on port:${port}`))
+    .catch((e) => logger.fatal("Error starting the application:", e));
 });
 
 process.once("SIGINT", exitHandler);
