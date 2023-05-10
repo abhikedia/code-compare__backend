@@ -6,7 +6,7 @@ const compileCode = async (req, res) => {
   logger.info("Compile code function called");
 
   const { code1, code2, input } = req.body;
-  const date = new Date();
+  const date = new Date().getTime();
   const uuid1 = `code-1_${date}_${code1.language}`;
   const uuid2 = `code-2_${date}_${code2.language}`;
   logger.info(`Generated ids for code: ${(uuid1, uuid2)}`);
