@@ -1,4 +1,4 @@
-const { createLogger, format, transports } = require("winston");
+const { createLogger, format, transports, addColors } = require("winston");
 const { combine, timestamp, label, printf, colorize } = format;
 
 const logLevels = {
@@ -15,9 +15,11 @@ const colors = {
   error: "orange",
   warn: "yellow",
   info: "green",
-  debug: "blue",
+  debug: "gray",
   trace: "magenta",
 };
+
+addColors(colors);
 
 const logger = createLogger({
   levels: logLevels,
