@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const codeRouter = require("./routes/codeRouter");
+const healthRouter = require("./routes/health-check");
 const startContainer = require("./docker/start-docker");
 const exitHandler = require("./utils/exitHandler");
 var cors = require("cors");
@@ -11,6 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/v1/code", codeRouter);
+app.use("/ping", healthRouter);
 
 const port = 4000;
 
