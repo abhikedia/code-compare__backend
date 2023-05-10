@@ -8,6 +8,7 @@ const exitHandler = require("./utils/exitHandler");
 var cors = require("cors");
 const logger = require("./logger/initialize");
 const app = express();
+const fs = require("fs");
 
 app.use(cors());
 app.use(express.json());
@@ -19,6 +20,15 @@ const port = 4000;
 app.listen(port, async () => {
   startContainer()
     .then(() => logger.info(`started on port:${port}`))
+    .then(() =>
+      fs.mkdir("./user-codes", (err) => {
+        if (err) logger.fatal(`Failed to create user-codes directory: ${err}`);
+        else {
+          fs.mkdir("./user-codes/tar");
+          logger.info("Created user-codes directory");
+        }
+      })
+    )
     .catch((e) => logger.fatal("Error starting the application:", e));
 });
 
