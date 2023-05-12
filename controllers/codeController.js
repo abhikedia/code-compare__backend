@@ -9,7 +9,7 @@ const compileCode = async (req, res) => {
   const date = new Date().getTime();
   const uuid1 = `code-1_${date}_${code1.language}`;
   const uuid2 = `code-2_${date}_${code2.language}`;
-  logger.info(`Generated ids for code: ${(uuid1, uuid2)}`);
+  logger.info(`Generated ids for code: ${uuid1}, ${uuid2}`);
   let response = {};
 
   archiveCode(uuid1, code1)

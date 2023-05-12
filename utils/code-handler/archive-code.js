@@ -8,8 +8,10 @@ const archiveCode = async (uuid, userCode) => {
 
   return new Promise((resolve, reject) => {
     fs.writeFile(`./user-codes/${uuid}.${language}`, code, (err) => {
-      if (err) console.log(err);
-      else {
+      if (err) {
+        logger.error(`Failed to archive: ${uuid}`);
+        reject();
+      } else {
         tar
           .c(
             {

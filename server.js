@@ -22,11 +22,10 @@ app.listen(port, async () => {
     .then(() => logger.info(`started on port:${port}`))
     .then(() =>
       fs.mkdir("./user-codes", (err) => {
+        fs.mkdirSync("./user-codes/tar");
+
         if (err) logger.fatal(`Failed to create user-codes directory: ${err}`);
-        else {
-          fs.mkdir("./user-codes/tar");
-          logger.info("Created user-codes directory");
-        }
+        else logger.info("Created user-codes directory");
       })
     )
     .catch((e) => logger.fatal("Error starting the application:", e));
