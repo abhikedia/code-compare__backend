@@ -27,6 +27,8 @@ const compileCode = async (req, res) => {
               time: result.time,
             };
 
+            console.log(response)
+
             res.status(200).json({
               status: "success",
               data: response,

@@ -20,14 +20,13 @@ const port = 4000;
 app.listen(port, async () => {
   startContainer()
     .then(() => logger.info(`started on port:${port}`))
-    .then(() =>
-      fs.mkdir("./user-codes", (err) => {
-        fs.mkdirSync("./user-codes/tar");
+    .then(() => {
+      const userCodesDir = "./user-codes";
+      if (!fs.existsSync(userCodesDir)) fs.mkdirSync(userCodesDir);
 
-        if (err) logger.fatal(`Failed to create user-codes directory: ${err}`);
-        else logger.info("Created user-codes directory");
-      })
-    )
+      const tarDir = "./user-codes/tar";
+      if (!fs.existsSync(tarDir)) fs.mkdirSync(tarDir);
+    })
     .catch((e) => logger.fatal("Error starting the application:", e));
 });
 

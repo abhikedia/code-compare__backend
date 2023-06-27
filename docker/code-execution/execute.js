@@ -26,10 +26,12 @@ const runCommandInContainer = (
           logger.error(`Error executing command: ${err}`);
           return reject(err);
         }
+        let outputChunks = [];
         stream.on("data", function (chunk) {
-          result.time = chunk;
+          outputChunks.push(chunk);
         });
         stream.on("end", () => {
+          result.time = Buffer.concat(outputChunks).toString("utf-8");
           logger.info("Successfully executed code");
           exec.inspect((err, data) => {
             if (err) {
@@ -46,11 +48,14 @@ const runCommandInContainer = (
                 },
                 (err, exec) => {
                   exec.start((err, stream2) => {
+                    let outputChunks = [];
                     stream2.on("data", function (chunk) {
-                      result.output = chunk;
+                      outputChunks.push(chunk);
                     });
 
                     stream2.on("end", () => {
+                      result.output =
+                        Buffer.concat(outputChunks).toString("utf-8");
                       logger.info("Code results fetched successfully");
                       resolve(result);
                     });
