@@ -1,6 +1,7 @@
 const executeCode = require("../docker/code-execution/execute");
 const logger = require("../logger/initialize");
 const archiveCode = require("../utils/code-handler/archive-code");
+const cleanCode = require("../utils/code-handler/clean-code");
 
 const compileCode = async (req, res) => {
   logger.info("Compile code function called");
@@ -26,6 +27,9 @@ const compileCode = async (req, res) => {
               output: result.output,
               time: result.time,
             };
+
+            cleanCode(uuid1, code1.language);
+            cleanCode(uuid2, code2.language);
 
             res.status(200).json({
               status: "success",

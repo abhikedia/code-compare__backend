@@ -17,7 +17,7 @@ const removalCommands = (language, uuid) => {
       return `cd /home/user-codes && cat ${uuid}-output.txt && rm ${uuid}-output.txt && rm ${uuid}.txt && rm ${uuid}.c`;
 
     case "cpp":
-      return `cd /home/user-codes && cat ${uuid}-output.txt && rm ${uuid}-output.txt && rm ${uuid}.txt && rm ${uuid}.cpp`;
+      return `cd /home/user-codes && cat ${uuid}-output.txt && rm ${uuid}-output.txt && rm ${uuid}.txt && rm ${uuid}.cpp && rm ${uuid}`;
 
     case "py":
       return `cd /home/user-codes && cat ${uuid}-output.txt && rm ${uuid}-output.txt && rm ${uuid}.txt && rm ${uuid}.py`;
